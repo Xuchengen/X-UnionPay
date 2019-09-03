@@ -11,9 +11,9 @@
     <url>https://github.com/Xuchengen/X-UnionPay</url>
 
     <scm>
-        <connection>scm:git:git@github.com:Xuchengen/X-UnionPay</connection>
-        <developerConnection>scm:git:git@github.com:Xuchengen/X-UnionPay</developerConnection>
-        <url>scm:git:git@github.com:Xuchengen/X-UnionPay</url>
+        <connection>scm:git@github.com:Xuchengen/X-UnionPay.git</connection>
+        <developerConnection>scm:git@github.com:Xuchengen/X-UnionPay.git</developerConnection>
+        <url>scm:git@github.com:Xuchengen/X-UnionPay.git</url>
     </scm>
 
     <licenses>
