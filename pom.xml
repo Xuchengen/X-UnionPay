@@ -46,7 +46,7 @@
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>central-maven</id>
             <build>
                 <plugins>
                     <!-- GPG -->
@@ -67,12 +67,12 @@
             </build>
             <distributionManagement>
                 <snapshotRepository>
-                    <id>nexus-release</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                    <id>central-maven</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
                 </snapshotRepository>
                 <repository>
-                    <id>nexus-release</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                    <id>central-maven</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
                 </repository>
             </distributionManagement>
         </profile>
