@@ -8,7 +8,28 @@
     <artifactId>X-UnionPay</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>X-UnionPay</name>
-    <description>X-UnionPay——中国银联在线网关支付接口</description>
+    <description>X-UnionPay——中国银联在线网关支付接口第三方SDK,旨在屏蔽底层逻辑提供一套简单的API方便调用。</description>
+    <url>https://github.com/Xuchengen/X-UnionPay</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>徐承恩</name>
+            <email>xuchengen@gmail.com</email>
+            <organization>github</organization>
+            <organizationUrl>https://xuchengen.github.io/</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+        <encoding>UTF-8</encoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -17,6 +38,40 @@
             <version>4.6.1</version>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>nexus-release</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>nexus-release</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -28,7 +83,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${encoding}</encoding>
                     <skip>true</skip>
                 </configuration>
             </plugin>
@@ -46,13 +101,25 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--自动发布Jar到Maven仓库-->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>nexus-release</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <!-- 资源文件处理插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${encoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>

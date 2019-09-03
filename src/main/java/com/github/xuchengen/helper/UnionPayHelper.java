@@ -14,7 +14,6 @@ import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
 import com.github.xuchengen.UnionPayCertInfo;
 import com.github.xuchengen.UnionPayConstants;
-import sun.security.provider.X509Factory;
 
 import java.io.InputStream;
 import java.security.KeyPair;
@@ -272,11 +271,11 @@ public class UnionPayHelper {
         try {
             Certificate certificate = KeyUtil.readCertificate(X509, inputStream);
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(X509Factory.BEGIN_CERT)
+            stringBuilder.append("-----BEGIN CERTIFICATE-----")
                     .append(System.getProperty("line.separator"))
                     .append(Base64.encode(certificate.getEncoded()))
                     .append(System.getProperty("line.separator"))
-                    .append(X509Factory.END_CERT);
+                    .append("-----END CERTIFICATE-----");
             return stringBuilder.toString();
         } catch (Exception e) {
             throw new CryptoException(e);
