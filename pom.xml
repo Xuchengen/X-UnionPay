@@ -46,7 +46,7 @@
 
     <profiles>
         <profile>
-            <id>central-maven</id>
+            <id>to-central-maven</id>
             <build>
                 <plugins>
                     <!-- GPG -->
@@ -67,11 +67,11 @@
             </build>
             <distributionManagement>
                 <snapshotRepository>
-                    <id>central-maven</id>
+                    <id>to-central-maven</id>
                     <url>https://oss.sonatype.org/content/repositories/snapshots</url>
                 </snapshotRepository>
                 <repository>
-                    <id>central-maven</id>
+                    <id>to-central-maven</id>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
                 </repository>
             </distributionManagement>
@@ -127,7 +127,7 @@
                 <version>1.6.7</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>nexus-release</serverId>
+                    <serverId>to-central-maven</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
