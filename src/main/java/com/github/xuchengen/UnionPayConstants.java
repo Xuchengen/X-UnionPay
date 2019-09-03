@@ -29,12 +29,12 @@ public interface UnionPayConstants {
     String V500_VERSION = "5.0.0";
 
     /**
-     * &符号
+     * AND符号
      */
     String AMPERSAND = "&";
 
     /**
-     * =符号
+     * EQ符号
      */
     String EQUAL = "=";
 

@@ -71,7 +71,7 @@ public class UnionPayHelper {
      * 构建键值对参数字符串
      *
      * @param data Map参数
-     * @return 类似K1=V1&K2=V2字符串
+     * @return 字符串
      */
     public static String buildKVPairStr(Map<String, String> data) {
         TreeMap<String, String> tree = new TreeMap<>();
@@ -100,7 +100,7 @@ public class UnionPayHelper {
      *
      * @param paramMap Map参数
      * @param charset  字符编码
-     * @return 类似K1=V1&K2=V2字符串
+     * @return 字符串
      */
     public static String buildKVPairStrWithURLEncode(Map<String, String> paramMap, String charset) {
         StringBuffer sf = new StringBuffer();
@@ -247,7 +247,7 @@ public class UnionPayHelper {
      * 获取证书的CN
      *
      * @param certificate 证书
-     * @return
+     * @return 字符串
      */
     public static String getIdentitiesFromCertficate(X509Certificate certificate) {
         String tDN = certificate.getSubjectDN().toString();
@@ -265,7 +265,7 @@ public class UnionPayHelper {
      * 从输入流中读取证书字符串
      *
      * @param inputStream 输入流
-     * @return 证书字符串
+     * @return 字符串
      */
     public static String getCertStrFromInputStream(InputStream inputStream) {
         try {
@@ -289,7 +289,7 @@ public class UnionPayHelper {
      *
      * @param paramStr 参数字符串
      * @param charset  字符编码
-     * @return 摘要字符串
+     * @return 字符串
      */
     public static String getSHA1Digest(String paramStr, String charset) {
         return new Digester(DigestAlgorithm.SHA1).digestHex(paramStr, charset);
@@ -300,7 +300,7 @@ public class UnionPayHelper {
      *
      * @param paramStr 参数字符串
      * @param charset  字符编码
-     * @return 摘要字符串
+     * @return 字符串
      */
     public static String getSHA256Digest(String paramStr, String charset) {
         return new Digester(DigestAlgorithm.SHA256).digestHex(paramStr, charset);
@@ -311,7 +311,7 @@ public class UnionPayHelper {
      *
      * @param paramStr   参数字符串
      * @param privateKey 私钥
-     * @return 签名字符串
+     * @return 字符串
      */
     public static String signBySHA1withRSA(String paramStr, String privateKey) {
         Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, privateKey, null);
@@ -323,7 +323,7 @@ public class UnionPayHelper {
      *
      * @param paramStr   参数字符串
      * @param privateKey 私钥
-     * @return 签名字符串
+     * @return 字符串
      */
     public static String signBySHA256withRSA(String paramStr, String privateKey) {
         Sign sign = SecureUtil.sign(SignAlgorithm.SHA256withRSA, privateKey, null);
