@@ -56,4 +56,18 @@ public interface Signer {
      * @return 签名方式
      */
     String getSignMethod();
+
+    /**
+     * 获取加密证书字符串
+     *
+     * @return 加密证书字符串
+     */
+    String getEncryptCertStr();
+
+    /**
+     * 获取商户私钥证书字符串
+     *
+     * @return 商户私钥证书字符串
+     */
+    String getMerchantPrivateKeyStr();
 }

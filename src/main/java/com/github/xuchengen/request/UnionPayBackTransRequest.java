@@ -5,7 +5,7 @@ import com.github.xuchengen.UnionPayRequest;
 import com.github.xuchengen.response.UnionPayBackTransResponse;
 
 /**
- * 在线网关支付--消费撤销响应模型<br>
+ * 在线网关支付--消费撤销请求模型<br>
  * 客服小姐姐说该接口比退货接口要快
  * 作者：徐承恩
  * 邮箱：xuchengen@gmail.com

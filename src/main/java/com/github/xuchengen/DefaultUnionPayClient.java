@@ -6,6 +6,9 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.log.Log;
@@ -83,7 +86,7 @@ public class DefaultUnionPayClient implements UnionPayClient {
             String reqStr = UnionPayHelper.buildKVPairStrWithURLEncode(paramMap, this.config.getEncoding());
 
             if (log.isDebugEnabled()) {
-                log.debug("请求报文：[{}]", reqStr);
+                log.debug("请求银联参数：[{}]", reqStr);
             }
 
             HttpResponse response = HttpUtil.createPost(apiUrl)
@@ -97,7 +100,7 @@ public class DefaultUnionPayClient implements UnionPayClient {
             String respStr = response.body();
 
             if (log.isDebugEnabled()) {
-                log.debug("银联HTTP响应字符串：[{}]", respStr);
+                log.debug("银联响应参数：[{}]", respStr);
             }
 
             Map<String, String> respMap;
@@ -105,17 +108,17 @@ public class DefaultUnionPayClient implements UnionPayClient {
                 respMap = UnionPayHelper.buildMapByKVPairStr(respStr);
 
                 if (CollUtil.isEmpty(respMap)) {
-                    throw new UnionPayException("将银联响应字符串转Map结构后元素为空");
+                    throw new UnionPayException("银联响应参数转为Map集合元素为空");
                 }
 
             } catch (Exception e) {
-                throw new UnionPayException(StrUtil.format("将银联响应字符串转Map结构异常：[{}]", e.getMessage()), e);
+                throw new UnionPayException(StrUtil.format("将银联响应参数转为Map集合异常：[{}]", e.getMessage()), e);
             }
 
             boolean verify = this.config.getSigner().verify(respMap, respMap.get(UnionPayConstants.VAR_ENCODING));
 
             if (!verify) {
-                throw new UnionPayException("银联返回报文验签失败");
+                throw new UnionPayException("银联返回参数验签失败");
             }
 
             Class<T> responseClass = request.getResponseClass();
@@ -125,6 +128,20 @@ public class DefaultUnionPayClient implements UnionPayClient {
         } catch (Exception e) {
             throw new UnionPayException(e);
         }
+    }
+
+    @Override
+    public String decrypt(String dataStr) {
+        RSA rsa = SecureUtil.rsa(config.getSigner().getMerchantPrivateKeyStr(), null);
+        return rsa.decryptStr(dataStr, KeyType.PrivateKey);
+    }
+
+    @Override
+    public String encrypt(String dataStr) {
+        String encryptCertStr = config.getSigner().getEncryptCertStr();
+        byte[] publicKeyByte = UnionPayHelper.getCertFromCertStr(encryptCertStr, true).getPublicKey().getEncoded();
+        RSA rsa = SecureUtil.rsa(null, publicKeyByte);
+        return rsa.encryptBase64(dataStr, KeyType.PublicKey);
     }
 
     /**

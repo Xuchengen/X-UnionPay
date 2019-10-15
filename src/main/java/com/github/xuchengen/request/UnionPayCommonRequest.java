@@ -1,7 +1,7 @@
 package com.github.xuchengen.request;
 
 /**
- * 公共请求参数
+ * 公共请求参数模型
  * 作者：徐承恩
  * 邮箱：xuchengen@gmail.com
  * 日期：2019-08-27

@@ -1,14 +1,11 @@
 package com.github.xuchengen;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.KeyUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.github.xuchengen.helper.UnionPayHelper;
 
-import java.io.ByteArrayInputStream;
 import java.security.cert.*;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,17 +29,17 @@ public class V510Signer implements Signer {
     /**
      * 加密证书
      */
-    private X509Certificate encryCert;
+    private String encryCertStr;
 
     /**
      * 根证书
      */
-    private X509Certificate rootCert;
+    private String rootCertStr;
 
     /**
      * 中间证书
      */
-    private X509Certificate middleCert;
+    private String middleCertStr;
 
     /**
      * 商户证书序列号
@@ -52,37 +49,37 @@ public class V510Signer implements Signer {
     /**
      * 商户私钥证书
      */
-    private String privateKey;
+    private String merchantPrivateKey;
 
     /**
      * 验证证书名称
      */
     private boolean verifyCNName;
 
-    public X509Certificate getEncryCert() {
-        return encryCert;
+    public String getEncryCertStr() {
+        return encryCertStr;
     }
 
-    public V510Signer setEncryCert(X509Certificate encryCert) {
-        this.encryCert = encryCert;
+    public V510Signer setEncryCertStr(String encryCertStr) {
+        this.encryCertStr = encryCertStr;
         return this;
     }
 
-    public X509Certificate getRootCert() {
-        return rootCert;
+    public String getRootCertStr() {
+        return rootCertStr;
     }
 
-    public V510Signer setRootCert(X509Certificate rootCert) {
-        this.rootCert = rootCert;
+    public V510Signer setRootCertStr(String rootCertStr) {
+        this.rootCertStr = rootCertStr;
         return this;
     }
 
-    public X509Certificate getMiddleCert() {
-        return middleCert;
+    public String getMiddleCertStr() {
+        return middleCertStr;
     }
 
-    public V510Signer setMiddleCert(X509Certificate middleCert) {
-        this.middleCert = middleCert;
+    public V510Signer setMiddleCertStr(String middleCertStr) {
+        this.middleCertStr = middleCertStr;
         return this;
     }
 
@@ -95,12 +92,12 @@ public class V510Signer implements Signer {
         return this;
     }
 
-    public String getPrivateKey() {
-        return privateKey;
+    public String getMerchantPrivateKey() {
+        return merchantPrivateKey;
     }
 
-    public V510Signer setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
+    public V510Signer setMerchantPrivateKey(String merchantPrivateKey) {
+        this.merchantPrivateKey = merchantPrivateKey;
         return this;
     }
 
@@ -120,7 +117,7 @@ public class V510Signer implements Signer {
 
     @Override
     public String sign(String paramStr) {
-        return UnionPayHelper.signBySHA256withRSA(paramStr, privateKey);
+        return UnionPayHelper.signBySHA256withRSA(paramStr, merchantPrivateKey);
     }
 
     @Override
@@ -147,16 +144,9 @@ public class V510Signer implements Signer {
             return false;
         }
 
-        X509Certificate signCert;
-        ByteArrayInputStream signPublicKeyCertStream = IoUtil.toStream(signPublicKeyCert, charset);
-        try {
-            signCert = (X509Certificate) KeyUtil.readX509Certificate(signPublicKeyCertStream);
-        } catch (Exception e) {
-            log.warn("签名公钥证书读取错误：[{}]", signPublicKeyCert, e);
-            return false;
-        } finally {
-            IoUtil.close(signPublicKeyCertStream);
-        }
+        X509Certificate signCert = UnionPayHelper.getCertFromCertStr(signPublicKeyCert, false);
+        X509Certificate middleCert = UnionPayHelper.getCertFromCertStr(middleCertStr, true);
+        X509Certificate rootCert = UnionPayHelper.getCertFromCertStr(rootCertStr, true);
 
         try {
             signCert.checkValidity();
@@ -229,9 +219,9 @@ public class V510Signer implements Signer {
         boolean result = UnionPayHelper.verifyBySHA256withRSA(digestData, signData, publicKey);
 
         if (log.isDebugEnabled()) {
-            log.debug("银联签名参数字符串：[{}]", signStr);
+            log.debug("银联签名字符串：[{}]", signStr);
 
-            log.debug("待验签键值对参数字符串：[{}]", kvPairStr);
+            log.debug("待验签键值对字符串：[{}]", kvPairStr);
 
             log.debug("待验签摘要字符串：[{}]", digest);
 
@@ -254,5 +244,15 @@ public class V510Signer implements Signer {
     @Override
     public String getSignMethod() {
         return SIGN_METHOD;
+    }
+
+    @Override
+    public String getEncryptCertStr() {
+        return encryCertStr;
+    }
+
+    @Override
+    public String getMerchantPrivateKeyStr() {
+        return merchantPrivateKey;
     }
 }

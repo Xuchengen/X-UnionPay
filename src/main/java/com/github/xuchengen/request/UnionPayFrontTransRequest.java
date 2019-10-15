@@ -5,7 +5,7 @@ import com.github.xuchengen.UnionPayRequest;
 import com.github.xuchengen.response.UnionPayFrontTransResponse;
 
 /**
- * 在线网关支付——消费接口
+ * 在线网关支付——消费接口请求模型
  * 作者：徐承恩
  * 邮箱：xuchengen@gmail.com
  * 日期：2019-08-26

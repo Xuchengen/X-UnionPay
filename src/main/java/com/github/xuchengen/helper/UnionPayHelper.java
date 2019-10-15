@@ -15,6 +15,7 @@ import cn.hutool.crypto.digest.Digester;
 import com.github.xuchengen.UnionPayCertInfo;
 import com.github.xuchengen.UnionPayConstants;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -33,6 +34,12 @@ public class UnionPayHelper {
     private static final String PKCS12 = "PKCS12";
 
     private static final String X509 = "X.509";
+
+    private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
+
+    private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
+
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     /**
      * 构建提交表单
@@ -270,18 +277,38 @@ public class UnionPayHelper {
     public static String getCertStrFromInputStream(InputStream inputStream) {
         try {
             Certificate certificate = KeyUtil.readCertificate(X509, inputStream);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("-----BEGIN CERTIFICATE-----")
-                    .append(System.getProperty("line.separator"))
-                    .append(Base64.encode(certificate.getEncoded()))
-                    .append(System.getProperty("line.separator"))
-                    .append("-----END CERTIFICATE-----");
-            return stringBuilder.toString();
+
+            return BEGIN_CERTIFICATE +
+                    LINE_SEPARATOR +
+                    Base64.encode(certificate.getEncoded()) +
+                    LINE_SEPARATOR +
+                    END_CERTIFICATE;
         } catch (Exception e) {
             throw new CryptoException(e);
         } finally {
             IoUtil.close(inputStream);
         }
+    }
+
+    /**
+     * 从证书字符串获取证书
+     *
+     * @param certStr     证书字符串
+     * @param isFormatter 是否格式化
+     * @return X509证书
+     */
+    public static X509Certificate getCertFromCertStr(String certStr, boolean isFormatter) {
+        if (isFormatter) {
+            certStr = BEGIN_CERTIFICATE +
+                    LINE_SEPARATOR +
+                    certStr +
+                    LINE_SEPARATOR +
+                    END_CERTIFICATE;
+        }
+        ByteArrayInputStream byteArrayInputStream = IoUtil.toUtf8Stream(certStr);
+        Certificate certificate = KeyUtil.readX509Certificate(byteArrayInputStream);
+        IoUtil.close(byteArrayInputStream);
+        return (X509Certificate) certificate;
     }
 
     /**
@@ -340,6 +367,19 @@ public class UnionPayHelper {
      */
     public static boolean verifyBySHA256withRSA(byte[] digestData, byte[] signData, byte[] publicKey) {
         Sign _sign = SecureUtil.sign(SignAlgorithm.SHA256withRSA, null, publicKey);
+        return _sign.verify(digestData, signData);
+    }
+
+    /**
+     * 验证签名
+     *
+     * @param digestData 摘要数据
+     * @param signData   签名数据
+     * @param publicKey  公钥
+     * @return 验证结果
+     */
+    public static boolean verifyBySHA1withRSA(byte[] digestData, byte[] signData, byte[] publicKey) {
+        Sign _sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
         return _sign.verify(digestData, signData);
     }
 }
