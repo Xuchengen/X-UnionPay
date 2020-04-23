@@ -45,6 +45,24 @@ X-UnionPay目前已经集成银联在线网关支付，后续可能会集成银�
 ## 特别鸣谢
 * <a href="https://github.com/looly/hutool" title="一套保持Java甜蜜的工具">Hutool——一套保持Java甜蜜的工具</a>
 
+* <a href="http://ibeetl.com/" title="Beetl国产高性能Java模板引擎">Beetl——国产高性能Java模板引擎</a>
+
 * <a href="https://github.com/Javen205/IJPay" title="IJPay让支付触手可及">IJPay——IJPay让支付触手可及</a>
 
+* <a href="https://www.jetbrains.com/?from=X-UnionPay" title="专业人士和团队的开发人员工具">Jetbrains——专业人士和团队的开发人员工具</a>
+
 以上排名不分先后。
+
+## 友情捐赠
+您的捐赠将用于购买JetBrains旗下IDEA开发工具正版序列号，并进行共享。
+<p align="center">
+    <a href="https://github.com/Xuchengen/demo-pay/blob/master/asset/unionpay.jpeg" target="_blank">
+        <img src="https://github.com/Xuchengen/demo-pay/blob/master/asset/unionpay.jpeg" width="30%" alt="银联支付">
+    </a>
+    <a href="https://github.com/Xuchengen/demo-pay/blob/master/asset/wechat.jpeg" target="_blank">
+        <img src="https://github.com/Xuchengen/demo-pay/blob/master/asset/wechat.jpeg" width="30%" alt="微信支付">
+    </a>
+    <a href="https://github.com/Xuchengen/demo-pay/blob/master/asset/alipay.jpeg" target="_blank">
+        <img src="https://github.com/Xuchengen/demo-pay/blob/master/asset/alipay.jpeg" width="30%" alt="支付宝">
+    </a>
+</p>
