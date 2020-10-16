@@ -154,26 +154,26 @@ public class UnionPayHelper {
         char curChar;
         String key = null;
         boolean isKey = true;
-        boolean isOpen = false;//值里有嵌套
+        boolean isOpen = false;
         char openName = 0;
         if (len > 0) {
-            for (int i = 0; i < len; i++) {// 遍历整个带解析的字符串
-                curChar = str.charAt(i);// 取当前字符
-                if (isKey) {// 如果当前生成的是key
-                    if (curChar == '=') {// 如果读取到=分隔符
+            for (int i = 0; i < len; i++) {
+                curChar = str.charAt(i);
+                if (isKey) {
+                    if (curChar == '=') {
                         key = temp.toString();
                         temp.setLength(0);
                         isKey = false;
                     } else {
                         temp.append(curChar);
                     }
-                } else {// 如果当前生成的是value
+                } else {
                     if (isOpen) {
                         if (curChar == openName) {
                             isOpen = false;
                         }
-                    } else {//如果没开启嵌套
-                        if (curChar == '{') {//如果碰到，就开启嵌套
+                    } else {
+                        if (curChar == '{') {
                             isOpen = true;
                             openName = '}';
                         }
@@ -182,7 +182,7 @@ public class UnionPayHelper {
                             openName = ']';
                         }
                     }
-                    if (curChar == '&' && !isOpen) {// 如果读取到&分割符,同时这个分割符不是值域，这时将map里添加
+                    if (curChar == '&' && !isOpen) {
                         putKeyValueToMap(temp, isKey, key, map);
                         temp.setLength(0);
                         isKey = true;
@@ -262,8 +262,9 @@ public class UnionPayHelper {
         if ((tDN != null)) {
             String tSplitStr[] = tDN.substring(tDN.indexOf("CN=")).split("@");
             if (tSplitStr != null && tSplitStr.length > 2
-                    && tSplitStr[2] != null)
+                    && tSplitStr[2] != null) {
                 tPart = tSplitStr[2];
+            }
         }
         return tPart;
     }
