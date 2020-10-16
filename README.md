@@ -18,6 +18,12 @@
 	</a>
 </p>
 
+<p align="center">
+    <a href="https://www.jetbrains.com/?from=X-UnionPay" target="_blank">
+        <img src="https://github.com/Xuchengen/demo-pay/blob/master/asset/jetbrains.svg" width="30%" alt="Jetbrains">
+    </a>
+</p>
+
 ## 简介
 X-UnionPay——中国银联在线网关支付接口第三方SDK,旨在屏蔽底层逻辑提供一套简单的API方便调用。
 
